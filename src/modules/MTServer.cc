@@ -148,3 +148,7 @@ int MTServer::getRunningJobs() {
 int MTServer::getMaxThreads() {
     return maxThreads;
 }
+
+double MTServer::getMaxPower() {
+    return par("maxPower");
+}

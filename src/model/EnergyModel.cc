@@ -52,7 +52,7 @@ std::vector<double> EnergyModel::getUtilizations() {
         int maxThreads = servers.at(i)->getMaxThreads();
         int usedThreads = servers.at(i)->getRunningJobs();
         double utilization = usedThreads / (double)maxThreads;
-        std::cout << utilization * 100 << "% ";
+        std::cout << utilization * 100 << "% " << "(max power:" << servers.at(i)->getMaxPower() << " )\t";
     }
     std::cout << "\n";
 

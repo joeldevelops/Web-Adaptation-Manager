@@ -66,6 +66,8 @@ public:
     virtual int getRunningJobs();
 
     virtual int getMaxThreads();
+
+    virtual double getMaxPower();
 };
 
 #endif /* MTSERVER_H_ */
