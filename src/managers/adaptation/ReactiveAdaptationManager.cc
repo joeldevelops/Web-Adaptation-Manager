@@ -16,6 +16,7 @@
 #include "ReactiveAdaptationManager.h"
 #include "managers/adaptation/UtilityScorer.h"
 #include "managers/execution/AllTactics.h"
+#include "model/EnergyModel.h"
 
 using namespace std;
 
@@ -39,6 +40,9 @@ Tactic* ReactiveAdaptationManager::evaluate() {
     double spareUtilization =  pModel->getConfiguration().getActiveServers() - pModel->getObservations().utilization;
     bool isServerBooting = pModel->getServers() > pModel->getActiveServers();
     double responseTime = pModel->getObservations().avgResponseTime;
+    EnergyModel eModel(pModel);
+    eModel.getUtilizations();
+
 
     if (responseTime > RT_THRESHOLD) {
         if (!isServerBooting

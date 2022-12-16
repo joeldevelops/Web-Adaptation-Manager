@@ -140,3 +140,11 @@ bool MTServer::isIdle() {
 bool MTServer::isEmpty() {
     return runningJobs.size() == 0;
 }
+
+int MTServer::getRunningJobs() {
+    return runningJobs.size();
+}
+
+int MTServer::getMaxThreads() {
+    return maxThreads;
+}

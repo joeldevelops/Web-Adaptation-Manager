@@ -35,6 +35,7 @@ OBJS = \
     $O/managers/adaptation/BaseAdaptationManager.o \
     $O/managers/adaptation/ReactiveAdaptationManager.o \
     $O/managers/adaptation/ReactiveAdaptationManager2.o \
+    $O/managers/adaptation/ReactiveAdaptationManager3.o \
     $O/managers/adaptation/UtilityScorer.o \
     $O/managers/execution/AddServerTactic.o \
     $O/managers/execution/ExecutionManagerHAProxy.o \
@@ -50,6 +51,8 @@ OBJS = \
     $O/managers/monitor/SimpleMonitor.o \
     $O/managers/monitor/SimProbe.o \
     $O/model/Configuration.o \
+    $O/model/CostModel.o \
+    $O/model/EnergyModel.o \
     $O/model/Environment.o \
     $O/model/Model.o \
     $O/model/Observations.o \

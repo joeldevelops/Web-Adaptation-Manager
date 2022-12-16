@@ -39,6 +39,7 @@ Tactic* ReactiveAdaptationManager2::evaluate() {
     bool isServerBooting = pModel->getServers() > pModel->getActiveServers();
     double responseTime = pModel->getObservations().avgResponseTime;
 
+
     if (responseTime > RT_THRESHOLD) {
         if (!isServerBooting
                 && pModel->getServers() < pModel->getMaxServers()) {

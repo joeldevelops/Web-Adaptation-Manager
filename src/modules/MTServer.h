@@ -62,6 +62,10 @@ public:
     virtual bool isIdle();
 
     virtual bool isEmpty();
+
+    virtual int getRunningJobs();
+
+    virtual int getMaxThreads();
 };
 
 #endif /* MTSERVER_H_ */
