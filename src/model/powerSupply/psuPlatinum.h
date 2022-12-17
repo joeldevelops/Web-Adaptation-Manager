@@ -18,10 +18,12 @@
 
 #include "model/powerSupply/psuBase.h"
 
+
 class psuPlatinum : public psuBase {
 public:
     psuPlatinum(double maxPower);
     virtual ~psuPlatinum();
 };
+
 
 #endif /* MODEL_POWERSUPPLY_PSUPLATINUM_H_ */

@@ -15,6 +15,7 @@
 
 #include <model/powerSupply/psuBase.h>
 
+
 psuBase::psuBase() {
     psuBase(0, {});
 }

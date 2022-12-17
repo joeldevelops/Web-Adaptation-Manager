@@ -13,17 +13,19 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#ifndef MODEL_POWERSUPPLY_PSUTITANIUM_H_
-#define MODEL_POWERSUPPLY_PSUTITANIUM_H_
+#ifndef MODEL_POWERSUPPLY_PSUFACTORY_H_
+#define MODEL_POWERSUPPLY_PSUFACTORY_H_
 
 #include "model/powerSupply/psuBase.h"
+#include "model/powerSupply/psuGold.h"
+#include "model/powerSupply/psuTitanium.h"
+#include "model/powerSupply/psuPlatinum.h"
 
-
-class psuTitanium : public psuBase {
+static class psuFactory {
 public:
-    psuTitanium(double maxPower);
-    virtual ~psuTitanium();
+    psuFactory();
+    virtual ~psuFactory();
+    static psuBase* get(std::string psuClass, double maxPower);
 };
 
-
-#endif /* MODEL_POWERSUPPLY_PSUTITANIUM_H_ */
+#endif /* MODEL_POWERSUPPLY_PSUFACTORY_H_ */

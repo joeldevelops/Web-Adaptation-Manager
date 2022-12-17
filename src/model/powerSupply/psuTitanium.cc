@@ -15,6 +15,7 @@
 
 #include <model/powerSupply/psuTitanium.h>
 
+
 psuTitanium::psuTitanium(double maxPower) {
     effIntervals = {
             {Interval(0.0, 0.1), 0.9},

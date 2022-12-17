@@ -18,10 +18,12 @@
 
 #include "model/powerSupply/psuBase.h"
 
+
 class psuGold : public psuBase {
 public:
     psuGold(double maxPower);
     virtual ~psuGold();
 };
+
 
 #endif /* MODEL_POWERSUPPLY_PSUGOLD_H_ */

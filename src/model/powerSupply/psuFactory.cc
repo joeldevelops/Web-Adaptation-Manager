@@ -13,17 +13,21 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#ifndef MODEL_POWERSUPPLY_PSUTITANIUM_H_
-#define MODEL_POWERSUPPLY_PSUTITANIUM_H_
+#include <model/powerSupply/psuFactory.h>
 
-#include "model/powerSupply/psuBase.h"
+psuFactory::psuFactory() {
+    // TODO Auto-generated constructor stub
 
+}
 
-class psuTitanium : public psuBase {
-public:
-    psuTitanium(double maxPower);
-    virtual ~psuTitanium();
-};
+psuFactory::~psuFactory() {
+    // TODO Auto-generated destructor stub
+}
 
+psuBase* psuFactory::get(std::string psuClass, double maxPower) {
+    if (psuClass == "Gold") return new psuGold(maxPower);
+    if (psuClass == "Titanium") return new psuTitanium(maxPower);
+    if (psuClass == "Platinum") return new psuPlatinum(maxPower);
 
-#endif /* MODEL_POWERSUPPLY_PSUTITANIUM_H_ */
+    throw std::runtime_error("[psuBase.get()] Unknown psu class!");
+}

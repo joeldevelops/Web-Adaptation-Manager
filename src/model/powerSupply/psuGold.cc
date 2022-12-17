@@ -15,6 +15,7 @@
 
 #include <model/powerSupply/psuGold.h>
 
+
 psuGold::psuGold(double maxPower) {
 
     effIntervals = {
@@ -33,7 +34,6 @@ psuGold::psuGold(double maxPower) {
     this->maxPower = maxPower;
 }
 
-psuGold::~psuGold() {
-    // TODO Auto-generated destructor stub
-}
+psuGold::~psuGold() { }
+
 

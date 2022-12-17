@@ -22,6 +22,9 @@
 #include <stdexcept>
 #include <vector>
 #include <util/Interval.h>
+#include <cctype>
+
+
 
 class psuBase {
 
@@ -29,7 +32,6 @@ public:
     psuBase();
     psuBase(double maxPower, std::vector<std::pair<Interval, double>> effIntervals);
     virtual ~psuBase();
-    psuBase get(std::string efficiencyClass);
     double getWallPower(double internalPowerDraw);
 
 protected:
