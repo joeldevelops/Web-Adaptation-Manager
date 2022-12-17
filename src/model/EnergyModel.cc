@@ -72,7 +72,7 @@ std::vector<double> EnergyModel::getInternalPowerDraws(std::vector<MTBrownoutSer
         double powerDraw = efficiency * servers.at(i)->getMaxPower();
         result.push_back(powerDraw);
 
-        std::cout << "Server " << i << ": \t UTIL: " << utilizations.at(i) << "%\t EFF: " << efficiency * 100 << "%\t PWR: " << powerDraw << "W\n";
+        std::cout << "Server " << i << ": \t UTIL: " << utilizations.at(i)*100 << "%\t EFF: " << efficiency * 100 << "%\t PWR: " << powerDraw << "W\n";
     }
 
     return result;
