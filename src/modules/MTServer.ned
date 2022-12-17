@@ -22,10 +22,13 @@ import org.omnetpp.queueing.Server;
 simple MTServer extends Server
 {
     parameters:
-		int threads = default(1);
-		double timeout @unit(s) = default(0.0); // if an arriving job has spent this amount of time or more queueing, it is just passed without being serviced
-	
-	@class(MTServer);
+        @class(MTServer);
+        double maxPower;
+        double dynamicRange;
+        string psuClass;
+        int threads = default(1);
+        double timeout @unit(s) = default(0.0); // if an arriving job has spent this amount of time or more queueing, it is just passed without being serviced
+
 }
 
 
