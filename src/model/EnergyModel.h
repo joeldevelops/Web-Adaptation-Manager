@@ -12,6 +12,8 @@
 #include <omnetpp.h>
 #include <vector>
 #include <modules/MTBrownoutServer.h>
+#include "model/powerSupply/psuFactory.h"
+#include <string>
 
 class EnergyModel {
 public:
@@ -25,8 +27,11 @@ public:
     double efficiencyPSU;
     double maxPower;
 
-    std::vector<double> getUtilizations();
     std::vector<MTBrownoutServer*> getServers();
+    std::vector<double> getUtilizations(std::vector<MTBrownoutServer*> servers);
+    std::vector<double> getInternalPowerDraws(std::vector<MTBrownoutServer*> servers);
+    std::vector<double> getInernalPowerDraws(std::vector<MTBrownoutServer*> servers);
+    double getWallPowerDraw();
 };
 
 #endif /* MODEL_ENERGYMODEL_H_ */
