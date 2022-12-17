@@ -16,7 +16,7 @@
 #include <model/powerSupply/psuGold.h>
 
 
-psuGold::psuGold(double maxPower) {
+psuGold::psuGold() {
 
     effIntervals = {
             {Interval(0.0, 0.1), 0.85},
@@ -30,8 +30,6 @@ psuGold::psuGold(double maxPower) {
             {Interval(0.8, 0.9), 0.887},
             {Interval(0.9, 1.0), 0.88},
     };
-
-    this->maxPower = maxPower;
 }
 
 psuGold::~psuGold() { }

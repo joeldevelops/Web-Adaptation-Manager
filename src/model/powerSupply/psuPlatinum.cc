@@ -15,7 +15,7 @@
 
 #include <model/powerSupply/psuPlatinum.h>
 
-psuPlatinum::psuPlatinum(double maxPower) {
+psuPlatinum::psuPlatinum() {
     effIntervals = {
             {Interval(0.0, 0.1), 0.88},
             {Interval(0.1, 0.2), 0.90},
@@ -28,8 +28,6 @@ psuPlatinum::psuPlatinum(double maxPower) {
             {Interval(0.8, 0.9), 0.916},
             {Interval(0.9, 1.0), 0.91},
     };
-
-    this->maxPower = maxPower;
 }
 
 psuPlatinum::~psuPlatinum() {

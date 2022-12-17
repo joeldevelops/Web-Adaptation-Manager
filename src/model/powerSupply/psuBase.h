@@ -30,13 +30,12 @@ class psuBase {
 
 public:
     psuBase();
-    psuBase(double maxPower, std::vector<std::pair<Interval, double>> effIntervals);
+    psuBase(std::vector<std::pair<Interval, double>> effIntervals);
     virtual ~psuBase();
-    double getWallPower(double internalPowerDraw);
+    double getWallPower(double utilization, double internalPowerDraw);
 
 protected:
     std::vector<std::pair<Interval, double>> effIntervals;
-    double maxPower;    // maximum power for the PSU
 };
 
 #endif /* MODEL_POWERSUPPLY_PSUBASE_H_ */

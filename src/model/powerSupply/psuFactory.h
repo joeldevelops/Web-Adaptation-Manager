@@ -21,11 +21,11 @@
 #include "model/powerSupply/psuTitanium.h"
 #include "model/powerSupply/psuPlatinum.h"
 
-static class psuFactory {
+class psuFactory {
 public:
     psuFactory();
     virtual ~psuFactory();
-    static psuBase* get(std::string psuClass, double maxPower);
+    static psuBase* get(std::string psuClass);
 };
 
 #endif /* MODEL_POWERSUPPLY_PSUFACTORY_H_ */

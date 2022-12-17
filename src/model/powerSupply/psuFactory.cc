@@ -24,10 +24,10 @@ psuFactory::~psuFactory() {
     // TODO Auto-generated destructor stub
 }
 
-psuBase* psuFactory::get(std::string psuClass, double maxPower) {
-    if (psuClass == "Gold") return new psuGold(maxPower);
-    if (psuClass == "Titanium") return new psuTitanium(maxPower);
-    if (psuClass == "Platinum") return new psuPlatinum(maxPower);
+psuBase* psuFactory::get(std::string psuClass) {
+    if (psuClass == "Gold") return new psuGold();
+    if (psuClass == "Titanium") return new psuTitanium();
+    if (psuClass == "Platinum") return new psuPlatinum();
 
     throw std::runtime_error("[psuBase.get()] Unknown psu class!");
 }

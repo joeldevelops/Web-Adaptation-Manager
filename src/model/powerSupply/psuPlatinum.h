@@ -21,7 +21,7 @@
 
 class psuPlatinum : public psuBase {
 public:
-    psuPlatinum(double maxPower);
+    psuPlatinum();
     virtual ~psuPlatinum();
 };
 

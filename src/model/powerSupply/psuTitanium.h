@@ -21,7 +21,7 @@
 
 class psuTitanium : public psuBase {
 public:
-    psuTitanium(double maxPower);
+    psuTitanium();
     virtual ~psuTitanium();
 };
 

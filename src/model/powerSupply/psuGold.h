@@ -21,7 +21,7 @@
 
 class psuGold : public psuBase {
 public:
-    psuGold(double maxPower);
+    psuGold();
     virtual ~psuGold();
 };
 

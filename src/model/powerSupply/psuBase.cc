@@ -17,24 +17,23 @@
 
 
 psuBase::psuBase() {
-    psuBase(0, {});
+    effIntervals = {};
 }
 
-psuBase::psuBase(double maxPower, std::vector<std::pair<Interval, double>> effIntervals = {}) {
-    this->maxPower = maxPower;
+psuBase::psuBase(std::vector<std::pair<Interval, double>> effIntervals = {}) {
     this->effIntervals = effIntervals;
 }
 
 psuBase::~psuBase() { }
 
-double psuBase::getWallPower(double internalPowerDraw) {
-    double usage = internalPowerDraw / maxPower;
+double psuBase::getWallPower(double maxPower, double powerDraw) {
     double efficiency = 0;
+    double utilization = powerDraw / maxPower;
 
     // Find the interval that contains the current usage
     for (auto const& i : effIntervals) {
         Interval interval = i.first;
-        if (interval.containsIncl(usage))
+        if (interval.containsIncl(utilization))
             efficiency = i.second;
     }
 
@@ -42,7 +41,7 @@ double psuBase::getWallPower(double internalPowerDraw) {
         throw std::runtime_error("Internal power draw outside of known intervals.");
     }
 
-    double wallPower = internalPowerDraw / efficiency;
+    double wallPower = powerDraw / efficiency;
     return wallPower;
 }
 
