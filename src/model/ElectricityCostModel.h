@@ -27,6 +27,7 @@ public:
     static constexpr double min = 0.2;  // EUR per KWh
 
     static double getElectricityCost();
+    static double getElectricityCostNoUpdate();
 
 private:
     static double cost;  // EUR per KWh

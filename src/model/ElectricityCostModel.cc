@@ -24,7 +24,7 @@ double ElectricityCostModel::cost = ElectricityCostModel::max / ElectricityCostM
 bool ElectricityCostModel::initialized = false;
 
 double ElectricityCostModel::updateCost() {
-    const int SEED = time(NULL);
+    const int SEED = 1337; //time(NULL);
 
     if (!initialized) {
         initialized = true;
@@ -52,4 +52,8 @@ double ElectricityCostModel::updateCost() {
 double ElectricityCostModel::getElectricityCost() {
     ElectricityCostModel::updateCost();
     return ElectricityCostModel::cost;
+}
+
+double ElectricityCostModel::getElectricityCostNoUpdate() {
+    return cost;
 }
