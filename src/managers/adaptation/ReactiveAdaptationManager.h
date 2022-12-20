@@ -28,6 +28,7 @@ class ReactiveAdaptationManager : public BaseAdaptationManager
 
   private:
     static double totalCost;
+    static double totalRevenue;
 };
 
 #endif

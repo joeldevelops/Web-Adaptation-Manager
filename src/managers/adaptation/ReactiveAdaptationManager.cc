@@ -35,6 +35,7 @@ Define_Module(ReactiveAdaptationManager);
  */
 
 double ReactiveAdaptationManager::totalCost = 0;
+double ReactiveAdaptationManager::totalRevenue = 0;
 
 Tactic* ReactiveAdaptationManager::evaluate() {
     MacroTactic* pMacroTactic = new MacroTactic;
@@ -49,7 +50,8 @@ Tactic* ReactiveAdaptationManager::evaluate() {
     CostModel cModel(&eModel, evaluationPeriod);
     double cost = cModel.getCost();
     totalCost += cost;
-    cout << "SYS COST:" << cost << "EUR\tTOT COST: " << totalCost << "EUR\n\n";
+    totalRevenue += cModel.getRevenue();
+    cout << "SYS COST: " << cost << " EUR\tTOT COST: " << totalCost << " EUR\tTOT REV: " << totalRevenue << " EUR\tBAL: " << totalRevenue - totalCost << " EUR\n\n";
 
 
     if (responseTime > RT_THRESHOLD) {
