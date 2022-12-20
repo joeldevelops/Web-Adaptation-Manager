@@ -19,17 +19,43 @@ public:
     virtual ~CostModel();
 
     double getCost();
-    double energyCost;
-
+    double getRevenue();
+    double getCostPerReq();
+    double getRevenuePerReq();
+    double getRevenuePerAd();
 
 private:
     EnergyModel* eModel;
-    double adMarkup;
-    double adPriceRange;
+    const double adMarkup = 0.05;
+    const double adPriceRange = 0.1;
     double pollingIntervalLen; // in seconds
+    double cost;
+    double revenue;
+    double revenuePerAd;
+    long long requestsHandled;
+
 
     double powerToEnergy(double powerDraw);  // energy in KWh
     double energyToCost(double energyUsed);
+
+    // This function has side effects, only call it once per "evaluation"
+    // It calculates the number of requests handled SINCE THE LAST CALL
+    long long calcRequestsHandled(); // since last check
+
+    /*
+     * Only call once per adaptation loop "iteration". Has side effects.
+     */
+    double calcCost();
+
+    /*
+     * Only call once per adaptation loop "iteration". Has side effects.
+     */
+    double calcRevenue();
+
+    /*
+     * Only call once per adaptation loop "iteration". Has side effects.
+     */
+    double calcRevenuePerAd();
 
 };
 
