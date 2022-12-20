@@ -21,13 +21,12 @@ public:
     virtual ~EnergyModel();
     Model* getModel();
 
-//protected:
-    Model* model;
+    static Model* model;
     double dynamicRange;
     double efficiencyPSU;
     double maxPower;
 
-    std::vector<MTBrownoutServer*> getServers();
+    static std::vector<MTBrownoutServer*> getServers();
     std::vector<double> getUtilizations(std::vector<MTBrownoutServer*> servers);
     std::vector<double> getInternalPowerDraws(std::vector<MTBrownoutServer*> servers);
     std::vector<double> getInernalPowerDraws(std::vector<MTBrownoutServer*> servers);

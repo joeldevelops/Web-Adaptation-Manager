@@ -11,12 +11,13 @@
 using namespace omnetpp;
 
 
+Model* EnergyModel::model = nullptr;
+
 EnergyModel::EnergyModel(Model* model) {
-    this->model = model;
+    EnergyModel::model = model;
 }
 
 EnergyModel::~EnergyModel() {
-    return;
 }
 
 Model* EnergyModel::getModel() {
@@ -94,7 +95,7 @@ double EnergyModel::getWallPowerDraw() {
 
         totalWallPower += wallPower;
 
-        std::cout << "[Server" << i << " WALLPWR: " << wallPower << "W] ";
+        std::cout << "[Server" << i << " WALLPWR: " << wallPower << "W (" << server->getPSUClass() << ")] ";
     }
     std::cout << "\n";
 
