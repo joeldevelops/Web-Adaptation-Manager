@@ -25,6 +25,9 @@ class ReactiveAdaptationManager : public BaseAdaptationManager
 {
   protected:
     virtual Tactic* evaluate();
+
+  private:
+    static double totalCost;
 };
 
 #endif
