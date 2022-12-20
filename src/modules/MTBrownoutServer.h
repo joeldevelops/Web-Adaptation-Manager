@@ -76,12 +76,20 @@ class MTBrownoutServer : public MTServer
      */
     bool cacheClearsWhenReboot;
 
+
+    /**
+     * requests handled since last call to getRequestsHandled()
+     */
+    long long requestsHandled;
   protected:
     virtual simtime_t generateJobServiceTime(queueing::Job* pJob);
     virtual void initialize() override;
 
   public:
     void clearServerCache();
+
+    // Side effect!! Clears counter
+    long long getRequestsHandled();
 };
 
 #endif
