@@ -56,6 +56,11 @@ OBJS = \
     $O/model/Environment.o \
     $O/model/Model.o \
     $O/model/Observations.o \
+    $O/model/powerSupply/psuBase.o \
+    $O/model/powerSupply/psuFactory.o \
+    $O/model/powerSupply/psuGold.o \
+    $O/model/powerSupply/psuPlatinum.o \
+    $O/model/powerSupply/psuTitanium.o \
     $O/modules/ArrivalMonitor.o \
     $O/modules/MTBrownoutServer.o \
     $O/modules/MTServer.o \
@@ -65,6 +70,7 @@ OBJS = \
     $O/modules/PredictableSource.o \
     $O/util/GMcQueue.o \
     $O/util/HAProxySocketCommand.o \
+    $O/util/Interval.o \
     $O/util/MMcQueue.o \
     $O/util/ServerUtilization.o \
     $O/util/TimeWindowStats.o \

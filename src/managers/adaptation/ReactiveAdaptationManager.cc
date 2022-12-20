@@ -41,7 +41,7 @@ Tactic* ReactiveAdaptationManager::evaluate() {
     bool isServerBooting = pModel->getServers() > pModel->getActiveServers();
     double responseTime = pModel->getObservations().avgResponseTime;
     EnergyModel eModel(pModel);
-    eModel.getUtilizations();
+    cout << "System draw: " << eModel.getWallPowerDraw() << "W\n\n";
 
 
     if (responseTime > RT_THRESHOLD) {

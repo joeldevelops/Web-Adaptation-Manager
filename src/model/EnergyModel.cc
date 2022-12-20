@@ -43,20 +43,61 @@ std::vector<MTBrownoutServer*> EnergyModel::getServers() {
     return result;
 }
 
-std::vector<double> EnergyModel::getUtilizations() {
+std::vector<double> EnergyModel::getUtilizations(std::vector<MTBrownoutServer*> servers) {
     std::vector<double> result;
-
-    std::vector<MTBrownoutServer*> servers = getServers();
 
     for (unsigned int i = 0; i < servers.size(); i++) {
         int maxThreads = servers.at(i)->getMaxThreads();
         int usedThreads = servers.at(i)->getRunningJobs();
         double utilization = usedThreads / (double)maxThreads;
-        std::cout << utilization * 100 << "% " << "(max power:" << servers.at(i)->getMaxPower() << " )\t";
+        result.push_back(utilization);
     }
-    std::cout << "\n";
-
-    //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
 
     return result;
 }
+
+std::vector<double> EnergyModel::getInternalPowerDraws(std::vector<MTBrownoutServer*> servers) {
+    std::vector<double> result;
+    std::vector<double> utilizations = getUtilizations(servers);
+
+    for (unsigned int i = 0; i < servers.size(); i++) {
+        double dynamicRange = servers.at(i)->getDynamicRange();
+        double utilization = utilizations.at(i);
+
+        // calculate the formula for the graph of the dynamic range
+        double slope = ((1 - dynamicRange) / (1 - 0.1));
+        double bias = dynamicRange - (slope * 0.1);
+
+        double efficiency = utilization * slope + bias;
+        double powerDraw = efficiency * servers.at(i)->getMaxPower();
+        result.push_back(powerDraw);
+
+        std::cout << "Server " << i << ": \t UTIL: " << utilizations.at(i)*100 << "%\t EFF: " << efficiency * 100 << "%\t PWR: " << powerDraw << "W\n";
+    }
+
+    return result;
+}
+
+double EnergyModel::getWallPowerDraw() {
+    std::vector<MTBrownoutServer*> servers = getServers();
+    std::vector<double> internalPowerDraws = getInternalPowerDraws(servers);
+    psuFactory powerSupplyFactory;
+
+    double totalWallPower = 0;
+
+    for (unsigned int i = 0; i < servers.size(); i++) {
+        MTBrownoutServer* server = servers.at(i);
+        double internalPowerDraw = internalPowerDraws.at(i);
+
+        psuBase* psu = powerSupplyFactory.get(server->getPSUClass());
+        double wallPower = psu->getWallPower(server->getMaxPower(), internalPowerDraws.at(i));
+
+        totalWallPower += wallPower;
+
+        std::cout << "[Server" << i << " WALLPWR: " << wallPower << "W] ";
+    }
+    std::cout << "\n";
+
+    return totalWallPower;
+}
+

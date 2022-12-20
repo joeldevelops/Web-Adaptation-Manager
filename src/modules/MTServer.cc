@@ -152,3 +152,12 @@ int MTServer::getMaxThreads() {
 double MTServer::getMaxPower() {
     return par("maxPower");
 }
+
+std::string MTServer::getPSUClass() {
+    return par("psuClass");
+}
+
+double MTServer::getDynamicRange() {
+    return par("dynamicRange");
+}
+

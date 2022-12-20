@@ -18,6 +18,7 @@
 
 #include <IServer.h>
 #include <list>
+#include <string>
 
 namespace queueing {
     class Job;
@@ -68,6 +69,10 @@ public:
     virtual int getMaxThreads();
 
     virtual double getMaxPower();
+
+    virtual std::string getPSUClass();
+
+    virtual double getDynamicRange();
 };
 
 #endif /* MTSERVER_H_ */
