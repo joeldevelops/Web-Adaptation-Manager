@@ -24,15 +24,18 @@ double ElectricityCostModel::cost = ElectricityCostModel::max / ElectricityCostM
 bool ElectricityCostModel::initialized = false;
 
 double ElectricityCostModel::updateCost() {
-    const int SEED = 1337; //time(NULL);
+    const bool USE_CUSTOM_SEED = false;
+    const int SEED = 1337; 
+    constexpr double MAX_CHANGE = 0.05;
 
     if (!initialized) {
         initialized = true;
-        srand(SEED);
+        if (USE_CUSTOM_SEED) srand(SEED);
+        else srand(time(NULL));
     }
 
     int action = rand() % 3;
-    double changeAmt = 0.05 * (max - min); // don't make huge jumps, only 5% of range
+    double changeAmt = MAX_CHANGE * (max - min); // don't make huge jumps, only 5% of range
 
     switch (action) {
     case 0: // increase
