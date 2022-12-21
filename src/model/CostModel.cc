@@ -81,14 +81,15 @@ double CostModel::getRevenuePerReq() {
 double CostModel::calcRevenuePerAd() {
     double costPerRequest = getCostPerReq();
     double markedUpCost = (1 + adMarkup) * costPerRequest;
+    constexpr double PRECISION = 10e5;
 
     // find the random amount within 'adPriceRange' of that
-    int upperMargin = (1 + adPriceRange) * markedUpCost * 10e5; // 10e5 for 5 decimal precision
-    int lowerMargin = (1 - adPriceRange) * markedUpCost * 10e5; // 10e5 for 5 decimal precision
+    int upperMargin = (1 + adPriceRange) * markedUpCost * PRECISION; // 10e5 for 5 decimal precision
+    int lowerMargin = (1 - adPriceRange) * markedUpCost * PRECISION; // 10e5 for 5 decimal precision
 
     int range = upperMargin - lowerMargin;
     int valueInt = rand() % range + lowerMargin;
-    double value = (double)valueInt / 10e5;
+    double value = (double)valueInt / PRECISION;
     //std::cout << "CPR: " << costPerRequest << "EUR\t MARKED: " << markedUpCost << "EUR\tFINAL: " << value << "EUR\n";
     return value;
 }
