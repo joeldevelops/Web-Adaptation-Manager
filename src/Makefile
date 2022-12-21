@@ -36,7 +36,6 @@ OBJS = \
     $O/managers/adaptation/ReactiveAdaptationManager.o \
     $O/managers/adaptation/ReactiveAdaptationManager2.o \
     $O/managers/adaptation/ReactiveAdaptationManager3.o \
-    $O/managers/adaptation/RollingLog.o \
     $O/managers/adaptation/UtilityScorer.o \
     $O/managers/execution/AddServerTactic.o \
     $O/managers/execution/ExecutionManagerHAProxy.o \
