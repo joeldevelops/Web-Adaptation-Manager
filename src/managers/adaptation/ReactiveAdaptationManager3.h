@@ -8,10 +8,24 @@
 #ifndef MANAGERS_ADAPTATION_REACTIVEADAPTATIONMANAGER3_H_
 #define MANAGERS_ADAPTATION_REACTIVEADAPTATIONMANAGER3_H_
 
-class ReactiveAdaptationManager3 {
+#include "BaseAdaptationManager.h"
+#include "model/CostModel.h"
+#include "model/EnergyModel.h"
+#include "managers/execution/AllTactics.h"
+
+
+class ReactiveAdaptationManager3 : public BaseAdaptationManager {
 public:
     ReactiveAdaptationManager3();
     virtual ~ReactiveAdaptationManager3();
+
+protected:
+    virtual Tactic* evaluate();
+
+private:
+    double totalRevenue;
+    double totalCost;
+
 };
 
 #endif /* MANAGERS_ADAPTATION_REACTIVEADAPTATIONMANAGER3_H_ */
