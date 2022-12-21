@@ -17,6 +17,7 @@
 #include "managers/adaptation/UtilityScorer.h"
 #include "managers/execution/AllTactics.h"
 #include "model/EnergyModel.h"
+#include "model/CostModel.h"
 
 using namespace std;
 
@@ -32,6 +33,10 @@ Define_Module(ReactiveAdaptationManager);
  * - if RT < RTT and spare utilization > 1
  *      -if dimmer < 1, increase dimmer else if servers > 1 and no server booting remove server
  */
+
+double ReactiveAdaptationManager::totalCost = 0;
+double ReactiveAdaptationManager::totalRevenue = 0;
+
 Tactic* ReactiveAdaptationManager::evaluate() {
     MacroTactic* pMacroTactic = new MacroTactic;
     Model* pModel = getModel();
@@ -40,8 +45,13 @@ Tactic* ReactiveAdaptationManager::evaluate() {
     double spareUtilization =  pModel->getConfiguration().getActiveServers() - pModel->getObservations().utilization;
     bool isServerBooting = pModel->getServers() > pModel->getActiveServers();
     double responseTime = pModel->getObservations().avgResponseTime;
+    double evaluationPeriod = 20;
     EnergyModel eModel(pModel);
-    cout << "System draw: " << eModel.getWallPowerDraw() << "W\n\n";
+    CostModel cModel(&eModel, evaluationPeriod);
+    double cost = cModel.getCost();
+    totalCost += cost;
+    totalRevenue += cModel.getRevenue();
+    cout << "SYS COST: " << cost << " EUR\tTOT COST: " << totalCost << " EUR\tTOT REV: " << totalRevenue << " EUR\tBAL: " << totalRevenue - totalCost << " EUR\n\n";
 
 
     if (responseTime > RT_THRESHOLD) {

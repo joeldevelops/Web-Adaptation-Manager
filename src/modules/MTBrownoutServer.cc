@@ -56,9 +56,13 @@ void MTBrownoutServer::initialize() {
     cacheDeltaLow = par("cacheDeltaLow");
     cachePrecision = par("cachePrecision");
     cacheClearsWhenReboot = par("cacheClearsWhenReboot");
+
+    requestsHandled = 0;
 }
 
 simtime_t MTBrownoutServer::generateJobServiceTime(queueing::Job* pJob)  {
+    requestsHandled++;
+
     double brownoutFactor = par("brownoutFactor");
     double u = uniform(0, 1, RNG);
     simtime_t st = 0;
@@ -90,4 +94,10 @@ simtime_t MTBrownoutServer::generateJobServiceTime(queueing::Job* pJob)  {
     emit(registerSignal("serviceTime"), (pJob->getKind() == 1) ? -st.dbl() : st.dbl());
 
     return st;
+}
+
+long long MTBrownoutServer::getRequestsHandled() {
+    long long temp = requestsHandled;
+    requestsHandled = 0;
+    return temp;
 }

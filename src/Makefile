@@ -52,6 +52,7 @@ OBJS = \
     $O/managers/monitor/SimProbe.o \
     $O/model/Configuration.o \
     $O/model/CostModel.o \
+    $O/model/ElectricityCostModel.o \
     $O/model/EnergyModel.o \
     $O/model/Environment.o \
     $O/model/Model.o \

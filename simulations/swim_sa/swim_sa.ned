@@ -24,6 +24,7 @@ import plasa.managers.monitor.SimpleMonitor;
 import plasa.managers.execution.ExecutionManager;
 import plasa.managers.adaptation.IAdaptationManager;
 import plasa.managers.monitor.SimProbe;
+import plasa.model.CostModel;
 import plasa.model.Model;
 import plasa.modules.AppServer;
 import plasa.modules.ArrivalMonitor;
