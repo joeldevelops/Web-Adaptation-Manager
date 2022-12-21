@@ -5,10 +5,10 @@
 
 using namespace std;
 
-class RollingLog<T>{
+template <class T> class RollingLog{
     public:
         RollingLog(int maxLogSize);
-        deque getHistory();
+        deque<T> getHistory();
         void showHistory(deque<T> history);
         void addEntry(T entry);
 
@@ -16,4 +16,6 @@ class RollingLog<T>{
         int maxLogSize;
         deque<T> history;
         
-}
+};
+
+#endif // ROLLINGLONG_H

@@ -1,14 +1,14 @@
+
 #include "RollingLog.h"
 #include <iostream>
 
-
-RollingLog::RollingLog(int maxLogSize) {
+template <class T>
+RollingLog<T>::RollingLog(int maxLogSize) {
     this->maxLogSize = maxLogSize;
 }
 
-RollingLog::history; 
-
-RollingLog::addEntry(T entry) {
+template <class T>
+void RollingLog<T>::addEntry(T entry) {
     if(history.size() >= maxLogSize) {
         history.pop_back();
         history.push_front(entry);
@@ -18,11 +18,13 @@ RollingLog::addEntry(T entry) {
     }
 }
 
-RollingLog::getHistory() {
+template <class T>
+deque<T> RollingLog<T>::getHistory() {
     return history;
 }
 
-RollingLog::showHistory(deque<T> history){
+template <class T>
+void RollingLog<T>::showHistory(deque<T> history){
     for(int i=0; i < history.size(); i++) {
         cout << history[i] << " ";
     }
