@@ -1,3 +1,4 @@
+/*
 
 #include "RollingLog.h"
 #include <iostream>
@@ -30,3 +31,4 @@ void RollingLog<T>::showHistory(deque<T> history){
     }
     cout << endl;
 }
+*/
