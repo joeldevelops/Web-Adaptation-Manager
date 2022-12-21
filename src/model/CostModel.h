@@ -23,6 +23,7 @@ public:
     double getCostPerReq();
     double getRevenuePerReq();
     double getRevenuePerAd();
+    long long getRequestsHandled();
 
 private:
     EnergyModel* eModel;
