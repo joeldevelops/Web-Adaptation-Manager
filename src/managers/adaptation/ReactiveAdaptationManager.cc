@@ -36,8 +36,19 @@ Define_Module(ReactiveAdaptationManager);
 
 double ReactiveAdaptationManager::totalCost = 0;
 double ReactiveAdaptationManager::totalRevenue = 0;
+double ReactiveAdaptationManager::totalBudget = 0;
+
+ReactiveAdaptationManager::ReactiveAdaptationManager() {
+    totalCost = 0;
+    totalRevenue = 0;
+    totalBudget = 0;
+}
 
 Tactic* ReactiveAdaptationManager::evaluate() {
+
+    const double EVALUATION_PERIOD = getSimulation()->getSystemModule()->par("evaluationPeriod");
+    const double COST_THRESH = par("budgetPerInterval");
+
     MacroTactic* pMacroTactic = new MacroTactic;
     Model* pModel = getModel();
     const double dimmerStep = 1.0 / (pModel->getNumberOfDimmerLevels() - 1);
@@ -46,12 +57,27 @@ Tactic* ReactiveAdaptationManager::evaluate() {
     bool isServerBooting = pModel->getServers() > pModel->getActiveServers();
     double responseTime = pModel->getObservations().avgResponseTime;
     double evaluationPeriod = 20;
+
     EnergyModel eModel(pModel);
     CostModel cModel(&eModel, evaluationPeriod);
+
     double cost = cModel.getCost();
-    totalCost += cost;
-    totalRevenue += cModel.getRevenue();
-    cout << "SYS COST: " << cost << " EUR\tTOT COST: " << totalCost << " EUR\tTOT REV: " << totalRevenue << " EUR\tBAL: " << totalRevenue - totalCost << " EUR\n\n";
+    double revenue = cModel.getRevenue();
+    long long requests = cModel.getRequestsHandled();
+
+    totalRevenue += revenue;
+    totalCost += cost; 
+    totalBudget += COST_THRESH;
+
+    cout << "COST: " << cost << ((cost > COST_THRESH) ? " [!!!]" : " ");
+    cout << "\tCOST TTL: " << totalCost;
+    cout << "\tBUDGET TTL: " << totalBudget;
+    cout << "\tREVENUE: " << revenue;
+    cout << "\tBALANCE: " << totalRevenue - totalCost;
+    cout << endl;
+    cout << "LATENCY: " << responseTime << ((responseTime > RT_THRESHOLD) ? " [!!!]" : " ");
+    cout << "\tDIMMER: " << dimmer;
+    cout << endl << endl;
 
 
     if (responseTime > RT_THRESHOLD) {
