@@ -25,6 +25,7 @@ simple ReactiveAdaptationManager like IAdaptationManager
         @statistic[decisionTime](unit=msec; record=mean,max,vector);
 
         @class(ReactiveAdaptationManager);
+        double budgetPerInterval;
         bool simulateDecisionDelay = default(true);
 
 }

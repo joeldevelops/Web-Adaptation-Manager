@@ -97,3 +97,6 @@ double CostModel::getRevenuePerAd() {
     return revenuePerAd;
 }
 
+long long CostModel::getRequestsHandled() {
+    return requestsHandled;
+}

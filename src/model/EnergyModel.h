@@ -31,6 +31,7 @@ public:
     std::vector<double> getInternalPowerDraws(std::vector<MTBrownoutServer*> servers);
     std::vector<double> getInernalPowerDraws(std::vector<MTBrownoutServer*> servers);
     double getWallPowerDraw();
+    double getAvgUtilization();
 };
 
 #endif /* MODEL_ENERGYMODEL_H_ */
