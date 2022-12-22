@@ -57,6 +57,16 @@ std::vector<double> EnergyModel::getUtilizations(std::vector<MTBrownoutServer*> 
     return result;
 }
 
+double EnergyModel::getAvgUtilization() {
+    std::vector<double> utils = getUtilizations(getServers());
+    
+    double total = 0;
+    for (double val : utils) {
+        total += val;
+    }
+    return total / utils.size();
+}
+
 std::vector<double> EnergyModel::getInternalPowerDraws(std::vector<MTBrownoutServer*> servers) {
     std::vector<double> result;
     std::vector<double> utilizations = getUtilizations(servers);
