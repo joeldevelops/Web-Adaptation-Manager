@@ -55,6 +55,16 @@ template <class T> class RollingLog{
             return 0;
         }
 
+        double getAverage() {
+            return getSum() / history.size();
+        }
+
+        double getSum() {
+            double total = 0;
+            for (double val : history) total += val;
+            return total;
+        }
+
     private:
         int maxLogSize;
         deque<T> history;
