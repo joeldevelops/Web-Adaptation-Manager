@@ -11,14 +11,18 @@
 
 Define_Module(ReactiveAdaptationManager3);
 
+using namespace std;
+
 RollingLog<long long>* ReactiveAdaptationManager3::requestLog = new RollingLog<long long>(5);
 RollingLog<double>* ReactiveAdaptationManager3::revenueLog = new RollingLog<double>(5);
 RollingLog<double>* ReactiveAdaptationManager3::costLog = new RollingLog<double>(5);
 RollingLog<double>* ReactiveAdaptationManager3::latencyLog = new RollingLog<double>(5);
+RollingLog<double>* ReactiveAdaptationManager3::costMarginLog = new RollingLog<double>(5);
 
 ReactiveAdaptationManager3::ReactiveAdaptationManager3() {
     totalRevenue = 0;
     totalCost = 0;
+    totalBudget = 0;
     error = 0;
 }
 
@@ -28,7 +32,10 @@ ReactiveAdaptationManager3::~ReactiveAdaptationManager3() {
 
 Tactic* ReactiveAdaptationManager3::evaluate() {
 
-    const double EVALUATION_PERIOD = 20;
+    const double EVALUATION_PERIOD = getSimulation()->getSystemModule()->par("evaluationPeriod");
+    const double LATENCY_THRESH = RT_THRESHOLD;
+    const double COST_THRESH = par("budgetPerInterval");
+    const double LOOKBACK = 5;
 
     Model* pModel = getModel();
     const double dimmerStep = 1.0 / (pModel->getNumberOfDimmerLevels() - 1);
@@ -47,72 +54,72 @@ Tactic* ReactiveAdaptationManager3::evaluate() {
 
     totalRevenue += revenue;
     totalCost += cost; 
+    totalBudget += COST_THRESH;
 
-    if (requestLog->getHistory().size() > 2) 
-        error += (requests > prediction) ? requests - prediction : prediction - requests;
-    std::cout << "REQ PRED: " << prediction << " (ERR: " << abs(requests - prediction) / (double)requests * 100 << "%)  \tSYS COST: " << cost << " EUR\tTOT COST: " << totalCost << " EUR\tTOT REV: " << totalRevenue << " EUR\tBAL: " << totalRevenue - totalCost << " EUR\n";
-    std::cout << "SERV. T.: " << responseTime << "\tERR TOT: " << error << "\n";
-
-    std::cout << "eREV: " << revenueLog->predictNext() << "\teCOST: " << costLog->predictNext() << "\teLATENCY: " << latencyLog->predictNext() << "\n\n";
+    cout << "COST: " << cost << ((cost > COST_THRESH) ? " [!!!]" : " ");
+    cout << "\tCOST TTL: " << totalCost;
+    cout << "\tBUDGET TTL: " << totalBudget;
+    cout << "\tREVENUE: " << revenue;
+    cout << "\tBALANCE: " << totalRevenue - totalCost;
+    cout << endl;
+    cout << "LATENCY: " << responseTime << ((responseTime > RT_THRESHOLD) ? " [!!!]" : " ");
+    cout << "\tDIMMER: " << dimmer;
+    cout << endl << endl;
 
     long long requestsHandled = cModel.getRequestsHandled();
     requestLog->addEntry(requestsHandled);
     revenueLog->addEntry(revenue);
     costLog->addEntry(cost);
     latencyLog->addEntry(responseTime);
-
+    costMarginLog->addEntry(COST_THRESH - cost);
     
-    MacroTactic* pMacroTactic = new MacroTactic;
-    return pMacroTactic;       
+    double expLatency = latencyLog->predictNext();
+    double expRequests = requestLog->predictNext();
+    double avgUtil = eModel.getAvgUtilization();
+
+    bool isLoadIncreasing = expRequests > requests;
+    bool isOverLatency = responseTime > LATENCY_THRESH;
+    bool isOverBudget = cost > COST_THRESH || totalCost > totalBudget;
+
+    bool isUnderUtilized = avgUtil < 0.2;
+    bool isOverUtilized = avgUtil > 0.9;
+    bool canAddServers = pModel->getServers() < pModel->getMaxServers();
+    bool canRemoveServers = pModel->getActiveServers() > 1;
+    bool canIncreaseDimmer = dimmer < 1;
+    bool canLowerDimmer = dimmer > 0;
+
+    MacroTactic* mTactic = new MacroTactic;
+
+    if (isOverLatency) {
+        // Lower the dimmer a bit since that has an immediate effect
+        if (canLowerDimmer) {
+            mTactic->addTactic(new SetDimmerTactic(max(0.0, dimmer - dimmerStep)));
+        }
+
+        // Can we add a new server? That would have a more permanent effect
+        if (!isServerBooting && canAddServers && !isOverBudget) {
+            mTactic->addTactic(new AddServerTactic);
+        }
+    }
+    else if (isLoadIncreasing && expLatency > LATENCY_THRESH * 0.8) {
+        if (!isServerBooting && canAddServers && !isOverBudget) {
+            mTactic->addTactic(new AddServerTactic);
+        }
+        else {
+            mTactic->addTactic(new SetDimmerTactic(max(0.0, dimmer - dimmerStep)));
+        }
+        
+    }
+    else if (!isLoadIncreasing) {
+        if (canIncreaseDimmer && !isOverBudget) mTactic->addTactic(new SetDimmerTactic(min(1.0, dimmer + dimmerStep)));
+
+        if (spareUtilization > 1 && canRemoveServers && expRequests < 0.9 * requests) {
+                mTactic->addTactic(new RemoveServerTactic);
+            }
+        else if (isOverBudget && spareUtilization > 0.5 && canRemoveServers) {
+            mTactic->addTactic(new RemoveServerTactic);
+        }
+    }
+    
+    return mTactic;       
 }
-
-
-
-
-/**
- * The stuff below is a failed attempt
- * If you guys have any ideas on how to salvage it then great, if not, we can get rid of it
-*/
-
-ReactiveAdaptationManager3::ModelPredictor::ModelPredictor(long long requests, int servers, int threads, double dimmer, Model* model) {
-    this->requests = requests;
-    this->servers = servers;
-    this->threads = threads;
-    this->dimmer = dimmer;
-    this->model = model;
-    this->currentState = model->getObservations();    
-    serverExample = EnergyModel::getServers().front();
-}
-
-double ReactiveAdaptationManager3::ModelPredictor::estimateLatency() {
-    // estimate time per job based on proposed dimmer assuming same number of servers
-    // assumes dimmer and latency are directly proportional (more dimmer, more latency)
-    double latencySameServers = latencyLog->getHistory().front() *  model->getDimmerFactor() / dimmer;
-    // adjust for new number of servers
-    // assumes servers and latency are indirectly proportional (more servers, less latency)
-    double latencyNewServers = latencySameServers * model->getActiveServers() / servers;
-    // adjust for new requests
-    // assumes direct proportionality (more requests, more latency)
-    double latencyNewReqs = latencyLog->getHistory().front() * requests / latencyNewServers; 
-    return latencyNewReqs;
-}
-
-double ReactiveAdaptationManager3::ModelPredictor::estimateCost() {
-    // estimate utilization with predicted requests
-    // more requests, more utilization
-    double utilSameServers = requests * currentState.utilization / requestLog->getHistory().front();
-    // now adjust to new number of servers
-    // more servers, less utilization
-    double utilNewServers = model->getActiveServers() * utilSameServers / servers;
-    // adjust to estimated request count
-    // more requests, more cost
-    double utilNewReqs = requests * utilNewServers / requestLog->getHistory().front();
-    return utilNewReqs;
-}
-
-double ReactiveAdaptationManager3::ModelPredictor::estimateRevenue() {
-    return estimateCost() * model->getDimmerFactor() * 1.05;
-}
-
-
-

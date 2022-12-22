@@ -22,32 +22,17 @@ protected:
     virtual Tactic* evaluate();
     double totalRevenue;
     double totalCost;
+    double totalBudget;
     static RollingLog<long long>* requestLog;
     static RollingLog<double>* revenueLog;
     static RollingLog<double>* costLog;
     static RollingLog<double>* latencyLog;
+    static RollingLog<double>* costMarginLog;
     long long error;
 
 public:
     ReactiveAdaptationManager3();
     virtual ~ReactiveAdaptationManager3();
-
-    class ModelPredictor {
-    public:
-        ModelPredictor(long long requests, int servers, int threads, double dimmer, Model* model);
-        double estimateCost();
-        double estimateLatency();
-        double estimateRevenue();
-
-    private:
-        long long requests;
-        int servers;
-        int threads;
-        double dimmer;
-        Model* model;
-        Observations currentState;
-        const MTBrownoutServer* serverExample;
-    };
 };
 
 #endif /* MANAGERS_ADAPTATION_REACTIVEADAPTATIONMANAGER3_H_ */
