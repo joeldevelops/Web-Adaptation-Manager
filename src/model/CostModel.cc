@@ -41,8 +41,7 @@ double CostModel::powerToEnergy(double powerDraw) {
 
 double CostModel::energyToCost(double energyUsed) {
     double energyCost = ElectricityCostModel::getElectricityCost();
-    //std::cout << "ENRG_COST: " << energyCost << "EUR/KWh\n";
-    return energyUsed;
+    return energyUsed * energyCost;
 }
 
 long long CostModel::calcRequestsHandled() {
