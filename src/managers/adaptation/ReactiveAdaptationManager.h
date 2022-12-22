@@ -23,12 +23,17 @@
  */
 class ReactiveAdaptationManager : public BaseAdaptationManager
 {
+  public:
+    ReactiveAdaptationManager();
+
   protected:
     virtual Tactic* evaluate();
 
   private:
     static double totalCost;
     static double totalRevenue;
+    static double totalBudget;
+
 };
 
 #endif
