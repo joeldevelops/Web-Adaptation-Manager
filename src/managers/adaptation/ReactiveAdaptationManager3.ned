@@ -21,5 +21,6 @@ package plasa.managers.adaptation;
 simple ReactiveAdaptationManager3 like IAdaptationManager
 {
     parameters:
+        double budgetPerInterval;
         bool simulateDecisionDelay = default(true);
 }
