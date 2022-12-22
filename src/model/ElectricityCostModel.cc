@@ -24,8 +24,8 @@ double ElectricityCostModel::cost = ElectricityCostModel::max / ElectricityCostM
 bool ElectricityCostModel::initialized = false;
 
 double ElectricityCostModel::updateCost() {
-    const bool USE_CUSTOM_SEED = false;
-    const int SEED = 1337; 
+    const bool USE_CUSTOM_SEED = true;
+    const int SEED = 123456789; 
     constexpr double MAX_CHANGE = 0.05;
 
     if (!initialized) {
