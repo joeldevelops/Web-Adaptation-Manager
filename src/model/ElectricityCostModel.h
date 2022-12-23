@@ -23,8 +23,8 @@ class ElectricityCostModel {
 
 public:
     ElectricityCostModel();
-    static constexpr double max = 0.5;  // EUR per KWh
-    static constexpr double min = 0.1;  // EUR per KWh
+    static constexpr double max = 1.2;  // EUR per KWh
+    static constexpr double min = 0.9;  // EUR per KWh
 
     static double getElectricityCost();
     static double getElectricityCostNoUpdate();
